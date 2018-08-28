@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -30,6 +31,9 @@ namespace TelerikAspNetCoreApp1
                 // Maintain property names during serialization. See:
                 // https://github.com/aspnet/Announcements/issues/194
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+            var connection = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\edcha\source\repos\TagHelperVideoSeries\TelerikAspNetCoreApp1\TelerikAspNetCoreApp1\App_Data\Northwind.MDF;Integrated Security=True;Connect Timeout=30";
+            services.AddDbContext<NorthwindDBContext>(options => options.UseSqlServer(connection));
 
             // Add Kendo UI services to the services container
             services.AddKendo();

@@ -1,0 +1,22 @@
+﻿<kendo-chart name="EmployeeQuarterSales" style="height:30px">
+    <series-defaults type="ChartSeriesType.Bullet" />
+    <chart-legend visible="false" />
+    <category-axis>
+        <category-axis-item>
+            <labels visible="false"/>
+            <major-grid-lines visible="false"/>
+        </category-axis-item>
+    </category-axis>
+    <value-axis>
+        <value-axis-item type="numeric">
+            <labels visible="false"/>
+            <major-grid-lines visible="false"/>
+            <major-ticks visible="false" />
+        </value-axis-item>
+    </value-axis>
+    <datasource>
+        <transport>
+            <read url="@Url.Action("EmployeeQuartSales", "Home")"/>
+        </transport>
+    </datasource>
+</kendo-chart>

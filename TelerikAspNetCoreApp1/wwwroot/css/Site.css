@@ -5,11 +5,23 @@ img {
 }
 
 article {
-    background-color: #F5F6F6;
+    background-color: hsla(187, 72%, 71%, 0.25);
     height: 100vh;
 }
 
 /* Top Bar */
+
+.hamburger {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+#menuPanel {
+    background-color: #fff;
+    padding: 10px;
+    z-index: 3;
+}
 
 #app-title-bar {
     text-align: center;
@@ -38,28 +50,6 @@ article {
     padding: 0;
     list-style: none;
 }
-
-#employee-list img, #employee-about img {
-    margin-right: 5px;
-}
-
-#employee-list img {
-    border-width: 1px;
-    max-width: 30px;
-}
-
-
-#employee-list div {
-    padding: 5px 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    display: block;
-}
-
-    #employee-list div:hover {
-        text-decoration: none;
-        cursor: pointer;
-    }
 
 .chart-wrap {
     text-align: right;

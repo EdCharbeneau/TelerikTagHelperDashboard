@@ -1,6 +1,4 @@
-﻿@using GenFu.HtmlHelpers.WireframeHelper;
-@model TelerikAspNetCoreApp1.Models.OrderSearchCriteria;
-@{
+﻿@{
     ViewBag.Title = "Team Efficiency";
 }
 
@@ -14,42 +12,10 @@
 </div>
 <div class="app-wrapper">
     <!-- Menu Panel -->
-    @*<div class="hidden-xs" style="float:left;">*@
     <kendo-responsivepanel name="menuPanel" breakpoint="768">
-        <div>
-            <div class="text-right">
-                <kendo-button name="menuPanelClose" icon="close" class="k-rpanel-toggle">Close</kendo-button>
-            </div>
-            <h3>Report Range</h3>
-            <label asp-for="StatsFrom">Stats From</label>
-            <p>
-                <!-- Stats From Date Picker -->
-                <kendo-datepicker value="new DateTime(1996,1,1)" name="StatsFrom" on-change="onCriteriaChange" />
-            </p>
-            <p><label asp-for="StatsTo">Stats To</label></p>
-            <p>
-                <!-- Stats To Date Picker -->
-                <kendo-datepicker value="new DateTime(1998,1,1)" name="StatsTo" on-change="onCriteriaChange" />
-            </p>
-            <nav id="employee-list">
-                <h3>Team members</h3>
-                <!-- Employee List View -->
-                <kendo-treeview name="EmployeesList" datatextfield="FullName"
-                                on-data-bound="onListDataBound" on-select="setEmployeeState">
-                    <hierarchical-datasource>
-                        <transport>
-                            <read url="@Url.Action("Employees_Read", "Employees")" type="GET" />
-                        </transport>
-                        <schema>
-                            <hierarchical-model id="EmployeeId" has-children="HasChildren" />
-                        </schema>
-                    </hierarchical-datasource>
-                </kendo-treeview>
-            </nav>
-        </div>
+        <partial name="_NavigationPanel" />
+        <!-- /Menu Panel -->
     </kendo-responsivepanel>
-    <!-- /Menu Panel -->
-
     <section id="main-section-content" class="row">
         <article class="col-xs-12">
             <div id="employee-details" class="row">
@@ -61,27 +27,7 @@
                         <h3 class="chart-title">Quarter to date sales</h3>
                         <p class="sales-report-value" id="EmployeeQuarterSalesLabel"></p>
                         <!-- QTD Sales Chart -->
-                        <kendo-chart name="EmployeeQuarterSales" auto-bind="false" theme="nova" on-data-bound="onQuarterSalesDataBound" style="height:30px">
-                            <series-defaults type="ChartSeriesType.Bullet" />
-                            <series>
-                                <series-item current-field="Current" target-field="Target" />
-                            </series>
-                            <datasource>
-                                <transport>
-                                    <read url="@Url.Action("EmployeeQuarterSales", "Employees" )" data="getEmployeeFilter" />
-                                </transport>
-                                <schema>
-                                    <model>
-                                        <fields>
-                                            <field name="OrderDate" type="date"></field>
-                                            <field name="OrderID" type="number"></field>
-                                            <field name="Current" type="number"></field>
-                                            <field name="Target" type="number"></field>
-                                        </fields>
-                                    </model>
-                                </schema>
-                            </datasource>
-                        </kendo-chart>
+                        <partial name="_QuarterToDateSalesChart" />
                     </div>
                 </div>
                 <div class="col-xs-12 col-lg-4">
@@ -89,45 +35,7 @@
                         <h3 class="chart-title">Monthly Average Sales</h3>
                         <p class="sales-report-value" id="EmployeeAverageSalesLabel"></p>
                         <!-- Montly Sales Chart -->
-                        <kendo-chart name="EmployeeAverageSales" auto-bind="false" theme="nova" on-data-bound="onAverageSalesDataBound" style="height:30px">
-                            <series-defaults type="ChartSeriesType.Line" />
-                            <series>
-                                <series-item width="1.5" field="EmployeeSales">
-                                    <markers visible="false" />
-                                    <tooltip template="#=kendo.toString(value,'c2')#" />
-                                </series-item>
-                            </series>
-                            <category-axis>
-                                <category-axis-item type="ChartCategoryAxisType.Date" field="Date">
-                                    <major-grid-lines visible="false" />
-                                    <labels visible="false" />
-                                </category-axis-item>
-                            </category-axis>
-                            <value-axis>
-                                <value-axis-item type="Numeric">
-                                    <major-grid-lines visible="false" />
-                                    <labels visible="false"></labels>
-                                </value-axis-item>
-                            </value-axis>
-                            <datasource>
-                                <transport>
-                                    <read url="@Url.Action("EmployeeAverageSales", "Employees" )" data="getEmployeeFilter" />
-                                </transport>
-                                <schema>
-                                    <model>
-                                        <fields>
-                                            <field name="Date" type="date"></field>
-                                            <field name="EmployeeSales" type="number"></field>
-                                            <field name="EmployeeID" type="number"></field>
-                                        </fields>
-                                    </model>
-                                </schema>
-                                <aggregates>
-                                    <aggregate aggregate="average" field="EmployeeSales" />
-                                </aggregates>
-                            </datasource>
-                        </kendo-chart>
-
+                        <partial name="_MonthlySalesChart" />
                     </div>
                 </div>
             </div>
@@ -136,31 +44,7 @@
                     <h3>Representative orders</h3>
 
                     <!-- Invoices -->
-                    <kendo-grid name="EmployeeSales" height="550" auto-bind="false">
-                        <columns>
-                            <column field="CustomerName" title="Customer Name" />
-                            <column field="OrderDate" format="{0:MM/dd/yyyy}" />
-                            <column field="ProductName" title="Product Name" />
-                            <column field="UnitPrice" title="Product Name" />
-                            <column field="Quantity" title="Product Name" />
-                        </columns>
-                        <datasource type="DataSourceTagHelperType.Ajax" page-size="20">
-                            <schema>
-                                <model>
-                                    <fields>
-                                        <field name="OrderDate" type="Date"></field>
-                                    </fields>
-                                </model>
-                            </schema>
-                            <transport>
-                                <read url="@Url.Action("Invoices_Read", "Invoice")" data="getEmployeeFilter" />
-                            </transport>
-                        </datasource>
-                        <groupable enabled="true" />
-                        <sortable enabled="true" />
-                        <pageable button-count="5" refresh="true" />
-                        <filterable enabled="true" />
-                    </kendo-grid>
+                    <partial name="_InvoicesGrid" />
                 </div>
             </div>
         </article>
@@ -215,7 +99,7 @@
             ui.quarterSales.dataSource.read();
         }
 
-        function getEmployeeFilter() {
+        function getOrderSearchCriteria() {
             return {
                 employeeId: employeeState.EmployeeId,
                 salesPerson: employeeState.FullName,

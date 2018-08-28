@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 
 namespace TelerikAspNetCoreApp1
@@ -30,10 +27,18 @@ namespace TelerikAspNetCoreApp1
                 .AddMvc()
                 // Maintain property names during serialization. See:
                 // https://github.com/aspnet/Announcements/issues/194
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var connection = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\edcha\source\repos\TagHelperVideoSeries\TelerikAspNetCoreApp1\TelerikAspNetCoreApp1\App_Data\Northwind.MDF;Integrated Security=True;Connect Timeout=30";
             services.AddDbContext<NorthwindDBContext>(options => options.UseSqlServer(connection));
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
             // Add Kendo UI services to the services container
             services.AddKendo();
@@ -45,14 +50,16 @@ namespace TelerikAspNetCoreApp1
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseMvc(routes =>
             {
@@ -60,9 +67,6 @@ namespace TelerikAspNetCoreApp1
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            // Configure Kendo UI
-            app.UseKendo(env);
         }
     }
 }

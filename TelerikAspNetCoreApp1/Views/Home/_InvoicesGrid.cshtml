@@ -2,9 +2,9 @@
     <columns>
         <column field="CustomerName" title="Customer Name" />
         <column field="OrderDate" format="{0:MM/dd/yyyy}" />
-        <column field="ProductName" title="Product Name" />
-        <column field="UnitPrice" title="Product Name" />
-        <column field="Quantity" title="Product Name" />
+        <column field="ProductName" title="Product Name" min-screen-width="768" />
+        <column field="UnitPrice" title="Unit Price" />
+        <column field="Quantity" min-screen-width="768"/>
     </columns>
     <datasource type="DataSourceTagHelperType.Ajax" page-size="20">
         <schema>

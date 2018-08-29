@@ -75,6 +75,10 @@ article {
     #employee-about {
         text-align: left;
     }
+    #employee-about .employee-name {
+        padding-top:2em;
+        display:block;
+    }
 
     #app-title-bar .title {
         text-align: left;

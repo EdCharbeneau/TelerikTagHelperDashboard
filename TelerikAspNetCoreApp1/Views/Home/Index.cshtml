@@ -8,19 +8,18 @@
     </div>
 </section>
 <div class="hamburger">
-    <kendo-button name="menuPanelOpen" icon="hbars" class="k-rpanel-toggle">menu</kendo-button>
+    <kendo-button name="menuPanelOpen" icon="menu" class="k-rpanel-toggle">menu</kendo-button>
 </div>
 <div class="app-wrapper">
     <!-- Menu Panel -->
-    <kendo-responsivepanel name="menuPanel" breakpoint="768">
-        <partial name="_NavigationPanel" />
-        <!-- /Menu Panel -->
-    </kendo-responsivepanel>
+    <partial name="_NavigationPanel" />
+    <!-- /Menu Panel -->
     <section id="main-section-content" class="row">
         <article class="col-xs-12">
-            <div id="employee-details" class="row">
+            <!-- Report Header -->
+            <section id="employee-details" class="row">
                 <div id="employee-about" class="col-xs-12 col-lg-4">
-                    <!-- Employee Avatar -->
+                    <!-- Employee Avatar Template -->
                 </div>
                 <div class="col-xs-12 col-lg-4">
                     <div class="chart-wrap">
@@ -28,6 +27,7 @@
                         <p class="sales-report-value" id="EmployeeQuarterSalesLabel"></p>
                         <!-- QTD Sales Chart -->
                         <partial name="_QuarterToDateSalesChart" />
+                        <!-- /QTD Sales Chart -->
                     </div>
                 </div>
                 <div class="col-xs-12 col-lg-4">
@@ -36,13 +36,14 @@
                         <p class="sales-report-value" id="EmployeeAverageSalesLabel"></p>
                         <!-- Montly Sales Chart -->
                         <partial name="_MonthlySalesChart" />
+                        <!-- /Montly Sales Chart -->
                     </div>
                 </div>
-            </div>
+            </section>
+            <!-- /Report Header -->
             <div class="row">
                 <div class="col-xs-12">
                     <h3>Representative orders</h3>
-
                     <!-- Invoices -->
                     <partial name="_InvoicesGrid" />
                 </div>
@@ -51,10 +52,8 @@
     </section>
 </div>
 
-<script type="text/x-kendo-tmpl" id="EmployeeAvatarTemplate">
-    <img src="@(Url.Content("~/images/employees/"))#:EmployeeId#.png" />
-    <span>#:FullName#</span>
-</script>
+<!-- /Kendo Templates -->
+<partial name="_EmployeeAvatarTemplate" />
 <!-- /Kendo Templates -->
 
 @section Scripts {
@@ -62,6 +61,7 @@
         let employeeState, ui;
 
         $(function () {
+            // references to UI elements
             ui = {
                 tree: $("#EmployeesList").data("kendoTreeView"),
                 from: $("#StatsFrom").data("kendoDatePicker"),
@@ -86,9 +86,10 @@
         }
 
         function updateEmployeeAvatar() {
-            var template = kendo.template($("#EmployeeAvatarTemplate").html());
+            // Get Kendo UI template
+            let template = kendo.template($("#EmployeeAvatarTemplate").html());
 
-            //apply template
+            // Apply template
             $("#employee-about").html(template(employeeState));
         }
 

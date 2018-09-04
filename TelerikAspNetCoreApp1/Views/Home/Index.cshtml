@@ -70,7 +70,7 @@
                 averageSales: $("#EmployeeAverageSales").data("kendoChart"),
                 quarterSales: $("#EmployeeQuarterSales").data("kendoChart")
             };
-        })
+        });
 
         function onListDataBound() {
             if (!employeeState) {
@@ -106,7 +106,7 @@
                 salesPerson: employeeState.FullName,
                 statsFrom: ui.from.value().toJSON(),
                 statsTo: ui.to.value().toJSON()
-            }
+            };
         }
 
         function onQuarterSalesDataBound(e) {
@@ -116,7 +116,7 @@
 
         function onAverageSalesDataBound(e) {
             var label = $("#EmployeeAverageSalesLabel"),
-                data = this.dataSource.aggregates()
+                data = this.dataSource.aggregates();
 
             if (data.EmployeeSales) {
                 label.text(kendo.toString(data.EmployeeSales.average, "c2"));

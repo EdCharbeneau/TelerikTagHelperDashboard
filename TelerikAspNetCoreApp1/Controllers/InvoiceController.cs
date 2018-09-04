@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TelerikAspNetCoreApp1.Controllers
@@ -16,6 +14,7 @@ namespace TelerikAspNetCoreApp1.Controllers
         {
             db = context;
         }
+
         public ActionResult Invoices_Read([DataSourceRequest]DataSourceRequest request,
             string salesPerson,
             DateTime statsFrom,

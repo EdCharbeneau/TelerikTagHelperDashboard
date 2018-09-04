@@ -18,8 +18,6 @@ namespace TelerikAspNetCoreApp1
 
         public IConfiguration Configuration { get; }
 
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
@@ -30,7 +28,9 @@ namespace TelerikAspNetCoreApp1
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var connection = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\edcha\source\repos\TagHelperVideoSeries\TelerikAspNetCoreApp1\TelerikAspNetCoreApp1\App_Data\Northwind.MDF;Integrated Security=True;Connect Timeout=30";
+            // Retrieve DB connection string from local secrets store.
+            // Use "dotnet user-secrets set ConnectionStrings:NorthwindDB <value>" to set this.
+            var connection = Configuration["ConnectionStrings:NorthwindDB"];
             services.AddDbContext<NorthwindDBContext>(options => options.UseSqlServer(connection));
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -44,7 +44,6 @@ namespace TelerikAspNetCoreApp1
             services.AddKendo();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -60,13 +59,7 @@ namespace TelerikAspNetCoreApp1
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvcWithDefaultRoute();
         }
     }
 }

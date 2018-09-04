@@ -1,23 +1,20 @@
-﻿using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using TelerikAspNetCoreApp1.Models;
+using Kendo.Mvc.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TelerikAspNetCoreApp1.Controllers
 {
     public class EmployeesController : Controller
     {
-
         private readonly NorthwindDBContext db;
 
         public EmployeesController(NorthwindDBContext context)
         {
             db = context;
         }
+
         public JsonResult Employees_Read(int? employeeId)
         {
             // Get employees who report to employeeId (null for root nodes)
@@ -70,7 +67,8 @@ namespace TelerikAspNetCoreApp1.Controllers
                               EmployeeSales = g.Sum(x => x.Sales),
                               Date = g.Key,
                           }
-);
+            );
+
             return result;
         }
 
@@ -84,9 +82,15 @@ namespace TelerikAspNetCoreApp1.Controllers
                     Current = (o.OrderDetails.Quantity * o.OrderDetails.UnitPrice) - (o.OrderDetails.Quantity * o.OrderDetails.UnitPrice * (decimal)o.OrderDetails.Discount)
                 });
             //TODO: Generate the target based on team's average sales
-            return new List<QuarterToDateSalesViewModel>() {
-                     new QuarterToDateSalesViewModel {Current = sales.Sum(s=>s.Current), Target = 15000, OrderDate = statsTo}
-            };
+            return new List<QuarterToDateSalesViewModel>
+                {
+                     new QuarterToDateSalesViewModel
+                     {
+                         Current = sales.Sum(s=>s.Current),
+                         Target = 15000,
+                         OrderDate = statsTo
+                     }
+                };
         }
     }
 }

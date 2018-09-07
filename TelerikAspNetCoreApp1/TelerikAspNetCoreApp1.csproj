@@ -11,15 +11,6 @@
     <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2018.2.620" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="Views\Home\_NavigationPanel.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Home\_InvoicesGrid.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-  </ItemGroup>
-
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
   </PropertyGroup>

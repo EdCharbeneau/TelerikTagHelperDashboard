@@ -30,13 +30,16 @@
             <nav id="employee-list">
                 <h3>Team members</h3>
                 <!-- Employee List View -->
-                <ul>
-                    <li>First Last</li>
-                    <li>First Last</li>
-                    <li>First Last</li>
-                    <li>First Last</li>
-                    <li>First Last</li>
-                </ul>
+                <kendo-treeview name="EmployeesList" datatextfield="FullName">
+                    <hierarchical-datasource>
+                        <transport>
+                            <read url="@Url.Action("Employees_Read", "Employees")" type="GET" />
+                        </transport>
+                        <schema>
+                            <hierarchical-model id="EmployeeId" has-children="HasChildren" />
+                        </schema>
+                    </hierarchical-datasource>
+                </kendo-treeview>
             </nav>
         </div>
     </div>

@@ -20,6 +20,14 @@ namespace TelerikAspNetCoreApp1.Controllers
             DateTime statsFrom,
             DateTime statsTo)
         {
+            // For demo purposes, if a salesPerson is empty, we'll set some defaults.
+            if (string.IsNullOrEmpty(salesPerson))
+            {
+                salesPerson = db.Employees.First().FullName;
+                statsFrom = new DateTime(1996, 1, 1);
+                statsTo = new DateTime(1998, 1, 1);
+            }
+
             var invoices = db.Invoices.Where(inv => inv.Salesperson == salesPerson)
                 .Where(inv => inv.OrderDate >= statsFrom && inv.OrderDate <= statsTo);
             DataSourceResult result = invoices.ToDataSourceResult(request, invoice => new

@@ -1,23 +1,25 @@
-﻿<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>
-                <a href="#">Dolor</a>
-            </th>
-            <th><a href="#">Lorem</a></th>
-            <th><a href="#">Ipsum</a></th>
-            <th><a href="#">Aliquam</a></th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 10; i < 101; i = i += 10)
-        {
-            <tr>
-                <td>@i</td>
-                <td>purus dignissim</td>
-                <td>quam sed porttitor</td>
-                <td>suspendisse</td>
-            </tr>
-        }
-    </tbody>
-</table>
+﻿<kendo-grid name="EmployeeSales" height="550">
+    <columns>
+        <column field="CustomerName" title="Customer Name" />
+        <column field="OrderDate" format="{0:MM/dd/yyyy}" />
+        <column field="ProductName" title="Product Name" min-screen-width="768" />
+        <column field="UnitPrice" title="Unit Price" />
+        <column field="Quantity" min-screen-width="768" />
+    </columns>
+    <datasource type="DataSourceTagHelperType.Ajax" page-size="20">
+        <schema>
+            <model>
+                <fields>
+                    <field name="OrderDate" type="Date"></field>
+                </fields>
+            </model>
+        </schema>
+        <transport>
+            <read url="@Url.Action("Invoices_Read", "Invoice")" />
+        </transport>
+    </datasource>
+    <groupable enabled="true" />
+    <sortable enabled="true" />
+    <pageable button-count="5" refresh="true" />
+    <filterable enabled="true" />
+</kendo-grid>

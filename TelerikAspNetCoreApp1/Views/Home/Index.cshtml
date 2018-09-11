@@ -84,7 +84,9 @@
                 tree: $("#EmployeesList").data("kendoTreeView"),
                 from: $("#StatsFrom").data("kendoDatePicker"),
                 to: $("#StatsTo").data("kendoDatePicker"),
-                grid: $("#EmployeeSales").data("kendoGrid")
+                grid: $("#EmployeeSales").data("kendoGrid"),
+                quarterSales: $("#EmployeeQuarterSales").data("kendoChart"),
+                averageSales: $("#EmployeeAverageSales").data("kendoChart")
             };
         });
 
@@ -112,6 +114,8 @@
         function onCriteriaChange() {
             updateEmployeeAvatar();
             ui.grid.dataSource.read();
+            ui.quarterSales.dataSource.read();
+            ui.averageSales.dataSource.read();
         }
 
         function getOrderSearchCriteria() {
@@ -121,6 +125,22 @@
                 statsFrom: ui.from.value().toJSON(),
                 statsTo: ui.to.value().toJSON()
             };
+        }
+
+        function onQuarterSalesDataBound(e) {
+            let data = this.dataSource.at(0);
+            $("#EmployeeQuarterSalesLabel").text(kendo.toString(data.Current, "c2"));
+        }
+
+        function onAverageSalesDataBound(e) {
+            var label = $("#EmployeeAverageSalesLabel"),
+                data = this.dataSource.aggregates();
+
+            if (data.EmployeeSales) {
+                label.text(kendo.toString(data.EmployeeSales.average, "c2"));
+            } else {
+                label.text(kendo.toString(0, "c2"));
+            }
         }
 
 

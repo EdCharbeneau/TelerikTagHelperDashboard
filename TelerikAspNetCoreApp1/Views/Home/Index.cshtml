@@ -63,8 +63,66 @@
 </div>
 
 <!-- /Kendo Templates -->
+<script type="text/x-kendo-tmpl" id="EmployeeAvatarTemplate">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="@(Url.Content("~/images/employees/"))#:EmployeeId#.png" />
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <span class="employee-name">#:FullName#</span>
+        </div>
+    </div>
+</script>
 <!-- /Kendo Templates -->
 @section Scripts {
     <script>
+        let employeeState, ui;
+
+        $(function () {
+            // references to UI elements
+            ui = {
+                tree: $("#EmployeesList").data("kendoTreeView"),
+                from: $("#StatsFrom").data("kendoDatePicker"),
+                to: $("#StatsTo").data("kendoDatePicker"),
+                grid: $("#EmployeeSales").data("kendoGrid")
+            };
+        });
+
+        function onListDataBound() {
+            if (!employeeState) {
+                this.select($(".k-item:first"));
+                employeeState = this.dataSource.getByUid(this.select()[0].dataset.uid);
+                onCriteriaChange();
+            }
+        }
+
+        function setEmployeeState(e) {
+            employeeState = ui.tree.dataSource.getByUid(e.node.dataset.uid);
+            onCriteriaChange();
+        }
+
+        function updateEmployeeAvatar() {
+            // Get Kendo UI template
+            let template = kendo.template($("#EmployeeAvatarTemplate").html());
+
+            // Apply template
+            $("#employee-about").html(template(employeeState));
+        }
+
+        function onCriteriaChange() {
+            updateEmployeeAvatar();
+            ui.grid.dataSource.read();
+        }
+
+        function getOrderSearchCriteria() {
+            return {
+                employeeId: employeeState.EmployeeId,
+                salesPerson: employeeState.FullName,
+                statsFrom: ui.from.value().toJSON(),
+                statsTo: ui.to.value().toJSON()
+            };
+        }
+
+
     </script>
 }

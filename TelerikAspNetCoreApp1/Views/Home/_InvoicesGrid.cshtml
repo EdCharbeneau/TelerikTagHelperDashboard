@@ -1,4 +1,4 @@
-﻿<kendo-grid name="EmployeeSales" height="550">
+﻿<kendo-grid name="EmployeeSales" height="550" auto-bind="false">
     <columns>
         <column field="CustomerName" title="Customer Name" />
         <column field="OrderDate" format="{0:MM/dd/yyyy}" />
@@ -15,7 +15,7 @@
             </model>
         </schema>
         <transport>
-            <read url="@Url.Action("Invoices_Read", "Invoice")" />
+            <read url="@Url.Action("Invoices_Read", "Invoice")" data="getOrderSearchCriteria"/>
         </transport>
     </datasource>
     <groupable enabled="true" />
